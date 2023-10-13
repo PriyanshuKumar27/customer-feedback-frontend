@@ -1,0 +1,31 @@
+.heading-1 {
+  margin: auto;
+  text-align: center;
+  color: #fff;
+}
+
+.heading-2 {
+  margin: auto;
+  text-align: center;
+  color: #fff;
+  margin-top: 50px;
+}
+
+.home-div {
+  display: flex;
+  margin-top: 5%;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.home-card {
+  display: flex;
+  margin-top: 5%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+@media (max-width: 768px) {
+  .home-card {
+    margin-top: 20%;
+  }
+}
