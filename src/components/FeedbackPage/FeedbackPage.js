@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import axios from "axios";
 import { URL, emailRegex } from "../../assets/config";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./FeedbackPage.css";
 
 const FeedbackPage = () => {
@@ -38,8 +39,13 @@ const FeedbackPage = () => {
       comments: commentRef.current.value,
     };
 
-    const resData = await axios.post(`${URL}/api/feedback/create`, obj);
-    navigate("/");
+    try {
+      const resData = await axios.post(`${URL}/api/feedback/create  `, obj);
+      toast.success(resData.data.message);
+      navigate("/");
+    } catch (e) {
+      toast.error("Error submitting feedback");
+    }
   };
 
   return (

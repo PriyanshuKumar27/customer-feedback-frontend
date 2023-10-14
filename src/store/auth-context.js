@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
@@ -31,6 +32,8 @@ export const AuthContextProvider = (props) => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("isLoggedIn");
     setisLoggedIn(false);
+    setFeedback([]);
+    toast.success("Logged out successfully!");
   };
 
   const handleFeedback = (data) => {

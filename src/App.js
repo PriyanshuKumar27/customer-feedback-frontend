@@ -6,12 +6,13 @@ import AuthenticationPage from "./components/Authentication/AuthenticationPage";
 import ViewFeedbackPage from "./components/ViewFeedbackPage/ViewFeedbackPage";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPage message={"Error! Not found"} />,
     children: [
       { index: true, element: <HomePage /> },
       { path: "feedback", element: <FeedbackPage /> },

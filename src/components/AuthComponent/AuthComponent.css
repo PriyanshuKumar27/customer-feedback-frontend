@@ -1,3 +1,10 @@
 .auth-text {
   margin-left: 5%;
 }
+
+.info {
+  font-size: 11px;
+  width: 80%;
+  margin-bottom: 5px;
+  color: #7c7878;
+}

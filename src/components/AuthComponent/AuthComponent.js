@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { URL, emailRegex, passwordRegex } from "../../assets/config";
-import { Link, redirect, useNavigate, useSearchParams } from "react-router-dom";
-import "./AuthComponent.css";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
+import { toast } from "react-toastify";
+import "./AuthComponent.css";
 
 const AuthComponent = () => {
   const [searchParams] = useSearchParams();
@@ -33,16 +34,19 @@ const AuthComponent = () => {
       password: passwordRef.current.value,
     };
 
-    const resData = await axios.post(`${URL}/api/user/${mode}`, obj);
-    if (mode === "login") {
-      const token = resData.data.token;
-      setTimeout(() => {
-        ctx.onLogin(token);
-      }, 0);
-    } else {
-      console.log("Sign up successful!!!");
+    try {
+      const resData = await axios.post(`${URL}/api/user/${mode}`, obj);
+      toast.success(resData.data.message);
+      if (mode === "login") {
+        const token = resData.data.token;
+        setTimeout(() => {
+          ctx.onLogin(token);
+        }, 0);
+      }
+      navigate("/");
+    } catch (e) {
+      toast.error(e?.response?.data?.error || e?.message);
     }
-    navigate("/");
   };
 
   return (
@@ -51,7 +55,7 @@ const AuthComponent = () => {
         <h2>{mode === "signup" ? "Sign up" : "Login"}</h2>
       </div>
       <div className="field-wrapper">
-        <label htmlFor="email">Username</label>
+        <label htmlFor="email">Username/Email</label>
         <input
           id="email"
           name="input-email"
@@ -75,12 +79,14 @@ const AuthComponent = () => {
           type="password"
           required
         ></input>
+        <p className="info">
+          {" "}
+          Password should include 8 to 15 characters which contain at least one
+          lowercase letter, one uppercase letter, one numeric digit, and one
+          special character
+        </p>
         {!isValidPassword && (
-          <span className="error-spn">
-            Please enter a valid password : should include 8 to 15 characters
-            which contain at least one lowercase letter, one uppercase letter,
-            one numeric digit, and one special character
-          </span>
+          <span className="error-spn">Please enter a valid password</span>
         )}
       </div>
       <div className="field-wrapper btn">

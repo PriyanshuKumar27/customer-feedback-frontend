@@ -1,14 +1,19 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import axios from "axios";
 import { URL } from "../../assets/config";
+import { failure, load, success } from "../../actions/actions";
+import { initialState } from "../../actions/initialState";
+import { reducer } from "../../actions/reducer";
 import CommentCard from "../CommentCard/CommentCard";
-import "./ViewFeedbackPage.css";
 import LoadingScreen from "../LoaderComponent/LoadingScreen";
+import ErrorPage from "../ErrorPage/ErrorPage";
+import "./ViewFeedbackPage.css";
+import { toast } from "react-toastify";
 
 const ViewFeedbackPage = () => {
-  const [loading, setIsloading] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const ctx = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -17,22 +22,25 @@ const ViewFeedbackPage = () => {
   }
 
   useEffect(() => {
-    setIsloading(true);
+    dispatch(load());
     axios
       .get(`${URL}/api/feedback`)
       .then((response) => {
+        toast.success("Sucessfully fetched feedbacks");
+        dispatch(success());
         ctx.handleFeedback(response.data);
       })
-      .catch(() => {})
-      .finally(() => {
-        setIsloading(false);
+      .catch((e) => {
+        toast.error("Error fetching feedback");
+        dispatch(failure());
       });
   }, []);
 
   return (
     <>
-      {loading && <LoadingScreen />}
-      {!loading && (
+      {state.loading && <LoadingScreen />}
+      {state.isError && <ErrorPage message={"No data found!"} />}
+      {!state.loading && !state.isError && (
         <div className="comment-container">
           {ctx.feedback.map((ele, i) => {
             if (i % 2 === 0) {
