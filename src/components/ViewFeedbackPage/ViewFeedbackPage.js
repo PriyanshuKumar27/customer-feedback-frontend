@@ -38,9 +38,9 @@ const ViewFeedbackPage = () => {
 
   return (
     <>
-      {state.loading && <LoadingScreen />}
+      {state.isLoading && <LoadingScreen />}
       {state.isError && <ErrorPage message={"No data found!"} />}
-      {!state.loading && !state.isError && (
+      {!state.isLoading && !state.isError && (
         <div className="comment-container">
           {ctx.feedback.map((ele, i) => {
             if (i % 2 === 0) {

@@ -1,5 +1,6 @@
 .root-div {
-  height: 100vh;
+  min-height: 100vh;
+  height: -webkit-fill-available;
   background: linear-gradient(
     rgb(36, 16, 85) 0%,
     rgb(51, 0, 125) 29.07%,

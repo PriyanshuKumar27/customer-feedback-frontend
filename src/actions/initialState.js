@@ -1,4 +1,4 @@
 export const initialState = {
-  loading: false,
+  isLoading: false,
   isError: false,
 };
